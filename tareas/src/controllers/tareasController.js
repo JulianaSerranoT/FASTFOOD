@@ -39,8 +39,8 @@ router.post('/tareas', async (req, res) => {
     const estado = req.body.estado || 'creada'; // Valor por defecto 'creada' si no se proporciona
     const prioridad = req.body.prioridad;
     // Validar campos obligatorios
-    if (!descripcion || !usuarioAsignado || !prioridad) {
-        return res.status(400).json({ message: 'Todos los campos (descripcion, usuarioAsignado, prioridad) son obligatorios.' });
+    if (!descripcion || !usuarioAsignado || !estado ||!prioridad) {
+        return res.status(400).json({ message: 'Todos los campos (descripcion, usuarioAsignado,estado y prioridad) son obligatorios.' });
     }
 
     // Validar que el estado sea correcto
