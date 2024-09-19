@@ -37,15 +37,14 @@ router.post('/tareas', async (req, res) => {
     const descripcion = req.body.descripcion;
     const usuarioAsignado = req.body.usuarioAsignado;
     const estado = req.body.estado || 'creada'; // Valor por defecto 'creada' si no se proporciona
-    const prioridad = req.body.prioridad;
 
     // Validar campos obligatorios
     if (!descripcion || !usuarioAsignado || !prioridad) {
-        return res.status(400).json({ message: 'Todos los campos (descripcion, usuarioAsignado, prioridad) son obligatorios.' });
+        return res.status(400).json({ message: 'Todos los campos (descripcion, usuarioAsignado) son obligatorios.' });
     }
 
     // Validar que el estado sea correcto
-    const estadoPermitidos = ['creada', 'en proceso', 'en revision', 'terminada'];
+    const estadoPermitidos = ['creada', 'en proceso', 'terminada'];
     if (!estadoPermitidos.includes(estado)) {
         console.log('Estado no permitido:', estado); // Log para el estado no permitido
         return res.status(400).send('Estado no permitido');
@@ -58,7 +57,7 @@ router.post('/tareas', async (req, res) => {
             return res.status(404).json({ message: 'El usuario asignado no existe.' });
         }
 
-        const result = await tareasModel.crearTarea(descripcion, usuarioAsignado, estado, prioridad);
+        const result = await tareasModel.crearTarea(descripcion, usuarioAsignado, estado);
         res.status(201).json({ id: result.insertId, message: 'Tarea creada exitosamente.' });
     } catch (error) {
         console.error('Error al crear tarea:', error);
@@ -74,14 +73,13 @@ router.put('/tareas/:id', async (req, res) => {
     const descripcion = req.body.descripcion;
     const usuarioAsignado = req.body.usuarioAsignado;
     const estado = req.body.estado;
-    const prioridad = req.body.prioridad;
 
     // Validar campos obligatorios
-    if (!descripcion ||!usuarioAsignado || !estado || !prioridad) {
-        return res.status(400).json({ message: 'Todos los campos (descripcion, usuarioAsignado, estado, prioridad) son obligatorios.' });
+    if (!descripcion ||!usuarioAsignado || !estado) {
+        return res.status(400).json({ message: 'Todos los campos (descripcion, usuarioAsignado, estado) son obligatorios.' });
     }
     //verificar estado 
-    const estadoPermitidos = ['creada', 'en proceso', 'en revision', 'terminada'];
+    const estadoPermitidos = ['creada', 'en proceso', 'terminada'];
     if (!estadoPermitidos.includes(estado)) {
         console.log('Estado no permitido:', estado); // Log para el estado no permitido 
         return res.status(400).send('Estado no permitido');
@@ -94,7 +92,7 @@ router.put('/tareas/:id', async (req, res) => {
             return res.status(404).json({ message: 'El usuario asignado no existe.' });
         }
 
-        await tareasModel.actualizarTarea(id,descripcion, usuarioAsignado, estado, prioridad);
+        await tareasModel.actualizarTarea(id,descripcion, usuarioAsignado, estado);
         res.json({ message: 'Tarea actualizada exitosamente.' });
     } catch (error) {
         console.error('Error al actualizar tarea:', error);

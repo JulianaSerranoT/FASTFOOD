@@ -6,7 +6,7 @@ const connection = mysql.createPool({
     user: 'root',
     password: '',
     port: '3306',
-    database: 'tareasdb11'
+    database: 'tareasdbf'
 });
 
 async function verificarUsuarioExiste(usuario) {
@@ -40,20 +40,16 @@ async function traerid(id) {
     return result[0];
 }
 
-//async function crearTarea(id,descripcion, usuarioAsignado, estado, prioridad) {
-    //const result = await connection.query('INSERT INTO tareas VALUES(?,?,?,?,?)', [id,descripcion, usuarioAsignado, estado, prioridad]);
-    //return result;
-//}
-async function crearTarea(descripcion, usuarioAsignado, estado, prioridad) {
+async function crearTarea(descripcion, usuarioAsignado, estado) {
     const [result] = await connection.query(
-        'INSERT INTO tareas (descripcion, usuarioAsignado, estado, prioridad) VALUES (?, ?, ?, ?)',
-        [descripcion, usuarioAsignado, estado, prioridad]
+        'INSERT INTO tareas (descripcion, usuarioAsignado, estado) VALUES (?, ?, ?)',
+        [descripcion, usuarioAsignado, estado]
     );
     return result;  // `result.insertId` contendrá el ID de la tarea creada
 }
 
-async function actualizarTarea(id,descripcion, usuarioAsignado, estado, prioridad) {
-    const result = await connection.query('UPDATE tareas SET descripcion = ?, usuarioAsignado = ?, estado = ?, prioridad = ? WHERE id = ?', [descripcion,usuarioAsignado, estado, prioridad, id]);
+async function actualizarTarea(id,descripcion, usuarioAsignado, estado) {
+    const result = await connection.query('UPDATE tareas SET descripcion = ?, usuarioAsignado = ?, estado = ? WHERE id = ?', [descripcion,usuarioAsignado, estado, id]);
     return result;
 }
 
