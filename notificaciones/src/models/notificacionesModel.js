@@ -6,13 +6,13 @@ const connection = mysql.createPool({
     user: 'root',
     password: '',
     port:'3306',
-    database: 'notificacionesdb11'
+    database: 'notificacionesdbf'
 });
 
 async function verificarTareaExiste(idTarea) {
     
     // URL de las APIs de tareas y usuarios
-    const tareasApiUrl = 'http://localhost:3002/tareas';
+    const tareasApiUrl = 'http://localhost:3004/tareas';
 
     try {
         const response = await axios.get(`${tareasApiUrl}/${idTarea}`);
@@ -32,7 +32,7 @@ async function verificarTareaExiste(idTarea) {
 // Función para verificar si un usuario existe
 async function verificarUsuarioExiste(usuario) {
     // URL de las APIs de usuarios
-    const usuariosApiUrl = 'http://localhost:3001/usuarios'; 
+    const usuariosApiUrl = 'http://localhost:3005/usuarios'; 
     try {
         const response = await axios.get(`${usuariosApiUrl}/${usuario}`);
         return response.status === 200; // Si el estado es 200, el usuario existe

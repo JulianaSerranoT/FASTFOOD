@@ -42,10 +42,9 @@ return res.json({ error: 'No hay disponibilidad de productos' });
 }
 
 // Creamos la orden
-const response = await axios.get(`http://localhost:3001/usuarios/${usuario}`);
-const { nombre: name, email } = response.data;
-
-const orden = { nombreCliente: name, emailCliente: email, totalCuenta };
+const response = await axios.get(`http://localhost:3005/usuarios/${usuario}`);
+const { nombre } = response.data;
+const orden = { nombreCliente: nombre, usuarioCliente: usuario, totalCuenta };
 await ordenesModel.crearOrden(orden);
 
 // Disminuimos la cantidad de unidades de los productos
@@ -60,7 +59,7 @@ res.status(201).send('Orden creada');
 async function calcularTotal(items) {
 let ordenTotal = 0;
 for (const producto of items) {
-const response = await axios.get(`http://localhost:3002/productos/${producto.id}`);
+const response = await axios.get(`http://localhost:3003/productos/${producto.id}`);
 ordenTotal += response.data.precio * producto.cantidad;
 }
 return ordenTotal;
@@ -71,7 +70,7 @@ return ordenTotal;
 async function verificarDisponibilidad(items) {
 let disponibilidad = true;
 for (const producto of items) {
-const response = await axios.get(`http://localhost:3002/productos/${producto.id}`);
+const response = await axios.get(`http://localhost:3003/productos/${producto.id}`);
 if (response.data.inventario < producto.cantidad) {
 disponibilidad = false;
 break;
@@ -84,10 +83,10 @@ return disponibilidad;
 // Función para disminuir la cantidad de unidades de los productos
 async function actualizarInventario(items) {
 for (const producto of items) {
-const response = await axios.get(`http://localhost:3002/productos/${producto.id}`);
+const response = await axios.get(`http://localhost:3003/productos/${producto.id}`);
 const inventarioActual = response.data.inventario;
 const inv=inventarioActual - producto.cantidad;
-await axios.put(`http://localhost:3002/productos/${producto.id}`, {
+await axios.put(`http://localhost:3003/productos/${producto.id}`, {
 inventario: inv
 });
 }

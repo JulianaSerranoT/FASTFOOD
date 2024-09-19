@@ -6,15 +6,15 @@ const connection = mysql.createPool({
     user: 'root',
     password: '',
     port: 3306, // Cambiado a 3306, el puerto por defecto para MySQL/MariaDB
-    database: 'ordenDB'
+    database: 'ordendbf'
 });
 
 // Función para crear una orden
 async function crearOrden(orden) {
-    const { nombreCliente, emailCliente, totalCuenta } = orden;
+    const { nombreCliente, usuarioCliente, totalCuenta } = orden;
     const result = await connection.query(
-        'INSERT INTO orden (nombreCliente, emailCliente, totalcuenta, fechahora) VALUES ( ?, ?, ?, NOW())',
-        [nombreCliente, emailCliente, totalCuenta]
+        'INSERT INTO orden (nombreCliente, usuarioCliente, totalcuenta, fechahora) VALUES ( ?, ?, ?, NOW())',
+        [nombreCliente, usuarioCliente, totalCuenta]
     );
     return result;
 }

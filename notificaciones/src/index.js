@@ -9,6 +9,6 @@ app.use(express.json());
 app.use(notificacionesController);
 
 
-app.listen(3003, () => {
-  console.log('Microservicio notificaciones ejecutandose en el puerto 3003');
+app.listen(3001, () => {
+  console.log('Microservicio notificaciones ejecutandose en el puerto 3001');
 });

@@ -9,6 +9,6 @@ app.use(express.json());
 app.use(tareasController);
 
 
-app.listen(3002, () => {
-  console.log('Microservicio Tareas ejecutandose en el puerto 3002');
+app.listen(3004, () => {
+  console.log('Microservicio Tareas ejecutandose en el puerto 3004');
 });
