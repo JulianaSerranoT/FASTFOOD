@@ -37,10 +37,10 @@ router.post('/tareas', async (req, res) => {
     const descripcion = req.body.descripcion;
     const usuarioAsignado = req.body.usuarioAsignado;
     const estado = req.body.estado || 'creada'; // Valor por defecto 'creada' si no se proporciona
-
+    const prioridad = req.body.prioridad;
     // Validar campos obligatorios
     if (!descripcion || !usuarioAsignado || !prioridad) {
-        return res.status(400).json({ message: 'Todos los campos (descripcion, usuarioAsignado) son obligatorios.' });
+        return res.status(400).json({ message: 'Todos los campos (descripcion, usuarioAsignado, prioridad) son obligatorios.' });
     }
 
     // Validar que el estado sea correcto
@@ -57,7 +57,7 @@ router.post('/tareas', async (req, res) => {
             return res.status(404).json({ message: 'El usuario asignado no existe.' });
         }
 
-        const result = await tareasModel.crearTarea(descripcion, usuarioAsignado, estado);
+        const result = await tareasModel.crearTarea(descripcion, usuarioAsignado, estado,prioridad);
         res.status(201).json({ id: result.insertId, message: 'Tarea creada exitosamente.' });
     } catch (error) {
         console.error('Error al crear tarea:', error);
@@ -73,10 +73,10 @@ router.put('/tareas/:id', async (req, res) => {
     const descripcion = req.body.descripcion;
     const usuarioAsignado = req.body.usuarioAsignado;
     const estado = req.body.estado;
-
+    const prioridad = req.body.prioridad;
     // Validar campos obligatorios
-    if (!descripcion ||!usuarioAsignado || !estado) {
-        return res.status(400).json({ message: 'Todos los campos (descripcion, usuarioAsignado, estado) son obligatorios.' });
+    if (!descripcion ||!usuarioAsignado || !estado || prioridad) {
+        return res.status(400).json({ message: 'Todos los campos (descripcion, usuarioAsignado, estado, prioridad) son obligatorios.' });
     }
     //verificar estado 
     const estadoPermitidos = ['creada', 'en proceso', 'terminada'];
@@ -92,7 +92,7 @@ router.put('/tareas/:id', async (req, res) => {
             return res.status(404).json({ message: 'El usuario asignado no existe.' });
         }
 
-        await tareasModel.actualizarTarea(id,descripcion, usuarioAsignado, estado);
+        await tareasModel.actualizarTarea(id,descripcion, usuarioAsignado, estado,prioridad);
         res.json({ message: 'Tarea actualizada exitosamente.' });
     } catch (error) {
         console.error('Error al actualizar tarea:', error);

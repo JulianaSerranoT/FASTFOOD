@@ -11,7 +11,7 @@ const connection = mysql.createPool({
 
 async function verificarUsuarioExiste(usuario) {
     // URL de la API de usuarios
-    const usuariosApiUrl = 'http://localhost:3001/usuarios';
+    const usuariosApiUrl = 'http://localhost:3005/usuarios';
     try {
         const response = await axios.get(`${usuariosApiUrl}/${usuario}`);
         return response.status === 200; // Si el estado es 200, el usuario existe
@@ -40,16 +40,16 @@ async function traerid(id) {
     return result[0];
 }
 
-async function crearTarea(descripcion, usuarioAsignado, estado) {
+async function crearTarea(descripcion, usuarioAsignado, estado, prioridad) {
     const [result] = await connection.query(
-        'INSERT INTO tareas (descripcion, usuarioAsignado, estado) VALUES (?, ?, ?)',
-        [descripcion, usuarioAsignado, estado]
+        'INSERT INTO tareas (descripcion, usuarioAsignado, estado) VALUES (?, ?, ?, ?)',
+        [descripcion, usuarioAsignado, estado, prioridad]
     );
     return result;  // `result.insertId` contendrá el ID de la tarea creada
 }
 
-async function actualizarTarea(id,descripcion, usuarioAsignado, estado) {
-    const result = await connection.query('UPDATE tareas SET descripcion = ?, usuarioAsignado = ?, estado = ? WHERE id = ?', [descripcion,usuarioAsignado, estado, id]);
+async function actualizarTarea(id,descripcion, usuarioAsignado, estado, prioridad) {
+    const result = await connection.query('UPDATE tareas SET descripcion = ?, usuarioAsignado = ?, estado = ?, prioridad = ? WHERE id = ?', [descripcion,usuarioAsignado, estado,prioridad, id]);
     return result;
 }
 
