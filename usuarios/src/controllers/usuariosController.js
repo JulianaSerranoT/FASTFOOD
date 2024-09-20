@@ -15,9 +15,12 @@ router.get('/usuarios', async (req, res) => {
 router.get('/usuarios/:usuario', async (req, res) => {
     // Extrae el parámetro dinámico 'usuario' de la URL
     const usuario = req.params.usuario;
+    const contraseña = req.params.password;
 
     // Log para verificar que el parámetro 'usuario' se ha recibido correctamente
     console.log('Usuario recibido en el controlador:', usuario);  
+    console.log('contraseña recibido en el controlador:', contraseña);  
+
 
     try {
         // Llama al modelo para traer los datos del usuario con el nombre de usuario proporcionado
