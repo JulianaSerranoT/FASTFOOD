@@ -113,7 +113,7 @@ router.get('/ordenes/usuario/:usuarioCliente', async (req, res) => {
         // Verifica si se encontró un usuario con ese nombre de usuario
         if (result.length > 0) {
             // Si se encontró, envía el primer usuario en el arreglo de resultados como respuesta en formato JSON
-            res.json(result[0]);
+            res.json(result);
         } else {
             // Si no se encontró ningún usuario, envía un mensaje con estado 404 (no encontrado)
             res.status(404).json({ message: 'No se encontró ninguna orden para ese usuario.' });
