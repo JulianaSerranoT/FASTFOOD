@@ -59,7 +59,7 @@ router.put('/ordenes/actualizar/:id', async (req, res) => {
     const { estado } = req.body;
 
     // Validar el estado (opcional)
-    const estadosValidos = ['creada', 'en proceso', 'completada', 'cancelada'];
+    const estadosValidos = ['creada', 'en preparacion', 'entregada'];
     if (!estadosValidos.includes(estado)) {
         return res.status(400).json({ error: 'Estado inválido' });
     }
