@@ -39,13 +39,44 @@ router.post('/ordenes', async (req, res) => {
     // Creamos la orden
     const response = await axios.get(`http://localhost:3005/usuarios/${usuario}`);
     const { nombre } = response.data;
-    const orden = { nombreCliente: nombre, usuarioCliente: usuario, totalCuenta };
+    const orden = { 
+        nombreCliente: nombre, 
+        usuarioCliente: usuario, 
+        estado: 'creada', // Estado por defecto
+        totalCuenta 
+    };
     await ordenesModel.crearOrden(orden);
 
     // Disminuimos la cantidad de unidades de los productos
     await actualizarInventario(items);
 
     res.status(201).send('Orden creada');
+});
+
+// Actualizar solo el estado de una orden
+router.put('/ordenes/actualizar/:id', async (req, res) => {
+    const { id } = req.params;
+    const { estado } = req.body;
+
+    // Validar el estado (opcional)
+    const estadosValidos = ['creada', 'en proceso', 'completada', 'cancelada'];
+    if (!estadosValidos.includes(estado)) {
+        return res.status(400).json({ error: 'Estado inválido' });
+    }
+
+    try {
+        // Actualizar el estado
+        const resultado = await ordenesModel.actualizarEstadoOrden(id, estado);
+        
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ error: 'Orden no encontrada' });
+        }
+
+        res.status(200).send('Estado de la orden actualizado');
+    } catch (error) {
+        console.error('Error al actualizar el estado de la orden:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 });
 
 // Eliminar una orden
@@ -67,14 +98,30 @@ router.delete('/ordenes/:id', async (req, res) => {
 
 // Función para ver ordenes por usuario 
 
-router.get('/notificacion/:usuarioCliente', async (req, res) => {
+router.get('/ordenes/usuario/:usuarioCliente', async (req, res) => {
+    // Extrae el parámetro dinámico 'usuario' de la URL
+    const usuarioCliente = req.params.usuarioCliente;
+
+    // Log para verificar que el parámetro 'usuario' se ha recibido correctamente
+    console.log('Usuario recibido en el controlador:', usuarioCliente);   
+
+
     try {
-        const usuarioCliente = req.params.usuarioCliente;
+        // Llama al modelo para traer los datos del usuario con el nombre de usuario proporcionado
         const result = await ordenesModel.traerordenesUsuario(usuarioCliente);
-        res.json(result);  // Devuelve todas las notificaciones
+
+        // Verifica si se encontró un usuario con ese nombre de usuario
+        if (result.length > 0) {
+            // Si se encontró, envía el primer usuario en el arreglo de resultados como respuesta en formato JSON
+            res.json(result[0]);
+        } else {
+            // Si no se encontró ningún usuario, envía un mensaje con estado 404 (no encontrado)
+            res.status(404).json({ message: 'No se encontró ninguna orden para ese usuario.' });
+        }
     } catch (error) {
-        console.error('Error al obtener notificaciones:', error);
-        res.status(500).json({ message: 'Error al obtener notificaciones', error });
+        // Si hay un error al buscar el usuario, lo registra en la consola y envía un mensaje de error al cliente
+        console.error('Error en el controlador:', error);
+        res.status(500).json({ message: 'Error al buscar el usuario.', error });
     }
 });
 

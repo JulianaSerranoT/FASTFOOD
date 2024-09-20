@@ -11,12 +11,17 @@ const connection = mysql.createPool({
 
 // Función para crear una orden
 async function crearOrden(orden) {
-    const { nombreCliente, usuarioCliente, totalCuenta } = orden;
+    const { nombreCliente, usuarioCliente,estado, totalCuenta } = orden;
     const result = await connection.query(
-        'INSERT INTO orden (nombreCliente, usuarioCliente, totalcuenta, fechahora) VALUES (?, ?, ?, NOW())',
-        [nombreCliente, usuarioCliente, totalCuenta]
+        'INSERT INTO orden (nombreCliente, usuarioCliente,estado, totalcuenta, fechahora) VALUES (?,?, ?, ?, NOW())',
+        [nombreCliente, usuarioCliente,estado, totalCuenta]
     );
     return result;
+}
+
+async function actualizarEstadoOrden(id, estado) {
+    const result = await connection.query('UPDATE orden SET estado = ? WHERE id = ?', [estado, id]);
+    return result[0]; // Devuelve el resultado
 }
 
 // Función para obtener una orden por ID
@@ -53,5 +58,6 @@ module.exports = {
     traerOrden,
     traerOrdenes,
     eliminarOrden ,
-    traerordenesUsuario
+    traerordenesUsuario,
+    actualizarEstadoOrden
 };
