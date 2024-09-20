@@ -65,6 +65,20 @@ router.delete('/ordenes/:id', async (req, res) => {
     }
 });
 
+// Función para ver ordenes por usuario 
+
+router.get('/notificacion/:usuarioCliente', async (req, res) => {
+    try {
+        const usuarioCliente = req.params.usuarioCliente;
+        const result = await ordenesModel.traerordenesUsuario(usuarioCliente);
+        res.json(result);  // Devuelve todas las notificaciones
+    } catch (error) {
+        console.error('Error al obtener notificaciones:', error);
+        res.status(500).json({ message: 'Error al obtener notificaciones', error });
+    }
+});
+
+
 // Función para calcular el total de la orden
 async function calcularTotal(items) {
     let ordenTotal = 0;

@@ -25,6 +25,17 @@ async function traerOrden(id) {
     return rows;
 }
 
+async function traerordenesUsuario(usuarioCliente) {
+    try {
+        // Consulta SQL para obtener todas las notificaciones del usuario asignado
+        const [rows] = await connection.query('SELECT * FROM orden WHERE usuarioCliente = ?', [usuarioCliente]);
+        return rows;  // Retorna todas las filas
+    } catch (error) {
+        console.error('Error al obtener las ordenes:', error);
+        throw error;
+    }
+}
+
 // Función para obtener todas las órdenes
 async function traerOrdenes() {
     const [rows] = await connection.query('SELECT * FROM orden');
@@ -41,5 +52,6 @@ module.exports = {
     crearOrden,
     traerOrden,
     traerOrdenes,
-    eliminarOrden 
+    eliminarOrden ,
+    traerordenesUsuario
 };
