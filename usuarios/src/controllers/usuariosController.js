@@ -111,7 +111,7 @@ router.post('/usuarios', async (req, res) => {
     }
 
     // Validar que el rol sea válido
-    const rolesPermitidos = ['gerente', 'trabajador'];
+    const rolesPermitidos = ['gerente', 'trabajador', "cliente"];
     if (!rolesPermitidos.includes(rol)) {
         console.log('Rol no permitido:', rol); // Log para rol no permitido
         return res.status(400).send('Rol no permitido');

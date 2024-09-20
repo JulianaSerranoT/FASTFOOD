@@ -27,8 +27,8 @@ router.get('/productos/:id', async (req, res) => {
             // Si se encontró, envía el primer producto en el arreglo de resultados como respuesta en formato JSON
             res.json(result[0]);  
         } else {
-            // Si no se encontró ningún usuario, envía un mensaje con estado 404 (no encontrado)
-            res.status(404).json({ message: 'No se encontró el usuario con ese nombre.' });         
+            // Si no se encontró ningún producto, envía un mensaje con estado 404 (no encontrado)
+            res.status(404).json({ message: 'No se encontró el producto con ese id.' });         
         }
 
     } catch (error) {
@@ -42,11 +42,10 @@ router.get('/productos/:id', async (req, res) => {
 //crear producto
 router.post('/productos', async (req, res) => {
     const nombre = req.body.nombre;
-    const descripcion = req.body.descripcion;
     const precio = req.body.precio;
     const cantidad = req.body.cantidad;
     
-    var result = await productosModel.crearProducto(nombre, descripcion, precio, cantidad);
+    var result = await productosModel.crearProducto(nombre, precio, cantidad);
     res.send("producto creado");
 });
 
@@ -54,7 +53,6 @@ router.post('/productos', async (req, res) => {
 //actualizar producto
 router.put('/productos/:id', async (req, res) => {
     //const nombre = req.body.nombre;
-    //const descripcion = req.body.descripcion;
     //const precio = req.body.precio;
     const cantidad = req.body.cantidad;
     const id = req.params.id;

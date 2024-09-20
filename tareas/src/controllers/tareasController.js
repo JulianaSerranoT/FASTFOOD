@@ -38,6 +38,7 @@ router.post('/tareas', async (req, res) => {
     const usuarioAsignado = req.body.usuarioAsignado;
     const estado = req.body.estado || 'creada'; // Valor por defecto 'creada' si no se proporciona
     const prioridad = req.body.prioridad;
+
     // Validar campos obligatorios
     if (!descripcion || !usuarioAsignado || !estado ||!prioridad) {
         return res.status(400).json({ message: 'Todos los campos (descripcion, usuarioAsignado,estado y prioridad) son obligatorios.' });
@@ -57,7 +58,7 @@ router.post('/tareas', async (req, res) => {
             return res.status(404).json({ message: 'El usuario asignado no existe.' });
         }
 
-        const result = await tareasModel.crearTarea(descripcion, usuarioAsignado, estado,prioridad);
+        const result = await tareasModel.crearTarea(descripcion, usuarioAsignado, estado, prioridad);
         res.status(201).json({ id: result.insertId, message: 'Tarea creada exitosamente.' });
     } catch (error) {
         console.error('Error al crear tarea:', error);
@@ -75,7 +76,7 @@ router.put('/tareas/:id', async (req, res) => {
     const estado = req.body.estado;
     const prioridad = req.body.prioridad;
     // Validar campos obligatorios
-    if (!descripcion ||!usuarioAsignado || !estado || prioridad) {
+    if (!descripcion ||!usuarioAsignado || !estado || !prioridad) {
         return res.status(400).json({ message: 'Todos los campos (descripcion, usuarioAsignado, estado, prioridad) son obligatorios.' });
     }
     //verificar estado 

@@ -42,7 +42,7 @@ async function traerid(id) {
 
 async function crearTarea(descripcion, usuarioAsignado, estado, prioridad) {
     const [result] = await connection.query(
-        'INSERT INTO tareas (descripcion, usuarioAsignado, estado) VALUES (?, ?, ?, ?)',
+        'INSERT INTO tareas (descripcion, usuarioAsignado, estado, prioridad) VALUES (?, ?, ?, ?)',
         [descripcion, usuarioAsignado, estado, prioridad]
     );
     return result;  // `result.insertId` contendrá el ID de la tarea creada

@@ -81,7 +81,7 @@ router.put('/notificacion/:id', async (req, res) => {
     }
 
     // Validar estado de notificación
-    const estadosPermitidos = ['creada', 'en proceso', 'en revisión', 'terminada'];
+    const estadosPermitidos = ['creada', 'en proceso', 'terminada'];
     if (!estadosPermitidos.includes(estado)) {
         return res.status(400).json({ message: 'Estado no permitido.' });
     }
