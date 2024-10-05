@@ -1,0 +1,54 @@
+services:
+
+ notificaciones:
+    build: ./notificaciones
+    links:
+      - tareas
+      - usuarios
+    ## necesito saber si va database o como se hace
+    ports:
+      - "3001:3001"
+ ordenes:
+    build: ./ordenes
+    links:
+      - usuarios
+      - productos
+    ports:
+      - "3002:3002"
+ productos:
+    build: ./productos
+    links:
+      ##necesito saber database
+    ports:
+      - "3003:3003"
+ tareas:
+    build: ./tareas
+    links:
+      - usuarios
+    ports:
+      - "3004:3004"
+ usuarios:
+    build: ./usuarios
+    links:
+
+    ports:
+      - "3005:3005"
+ estadisticas:
+    build: ./estadisticas
+    links:
+      - ordenes
+      - usuarios
+    ports:
+      - "3006:3006"
+ web:
+    build: ./web
+    links:
+      - notificaciones
+      - estadisticas
+      - ordenes
+      - productos
+      - tareas
+      - usuarios
+    ports:
+      - "1080:80"
+    
