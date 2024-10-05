@@ -4,9 +4,9 @@ EXPOSE 3001
 
 WORKDIR /notificaciones
 
-COPY  controllers /notificaciones/controllers
-COPY  models /notificaciones/models
-COPY  index.js /notificaciones
+COPY  controllers /notificaciones/src/controllers
+COPY  models /notificaciones/src/models
+COPY  index.js /notificaciones/src
 
 RUN npm init --yes
 RUN npm intsall express morgan mysql mysql2 axios

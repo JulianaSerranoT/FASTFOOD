@@ -4,9 +4,9 @@ EXPOSE 3003
 
 WORKDIR /productos
 
-COPY  controllers /productos/controllers
-COPY  models /productos/models
-COPY  index.js /productos
+COPY  controllers /productos/src/controllers
+COPY  models /productos/src/models
+COPY  index.js /productos/src
 
 RUN npm init --yes
 RUN npm intsall express morgan mysql mysql2 axios

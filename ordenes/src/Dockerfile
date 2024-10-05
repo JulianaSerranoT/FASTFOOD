@@ -4,9 +4,9 @@ EXPOSE 3002
 
 WORKDIR /ordenes
 
-COPY  controllers /ordenes/controllers
-COPY  models /ordenes/models
-COPY  index.js /ordenes
+COPY  controllers /ordenes/src/controllers
+COPY  models /ordenes/src/models
+COPY  index.js /ordenes/src
 
 RUN npm init --yes
 RUN npm intsall express morgan mysql mysql2 axios
