@@ -6,7 +6,7 @@ const connection = mysql.createPool({
     user: 'root',
     password: '',
     port: '3306',
-    database: 'tareasdbf'
+    database: '123456'
 });
 
 async function verificarUsuarioExiste(usuario) {

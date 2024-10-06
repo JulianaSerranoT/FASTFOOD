@@ -4,9 +4,9 @@ const axios = require('axios'); // Importa axios
 const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: '123456',
     port:'3306',
-    database: 'notificacionesdbf'
+    database: 'fastfood'
 });
 
 async function verificarTareaExiste(idTarea) {

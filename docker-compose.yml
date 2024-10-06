@@ -20,6 +20,7 @@ services:
     links:
       - tareas
       - usuarios
+      - db
     ## necesito saber si va database o como se hace
     ports:
       - "3001:3001"
@@ -28,24 +29,27 @@ services:
     links:
       - usuarios
       - productos
+      - db
     ports:
       - "3002:3002"
   productos:
     build: ./productos
     links:
+      - db
       ##necesito saber database
     ports:
       - "3003:3003"
   tareas:
     build: ./tareas
     links:
+      - db
       - usuarios
     ports:
       - "3004:3004"
   usuarios:
     build: ./usuarios
     links:
-
+      - dn
     ports:
       - "3005:3005"
   estadisticas:
@@ -53,11 +57,13 @@ services:
     links:
       - ordenes
       - usuarios
+      - db
     ports:
       - "3006:3006"
   web:
     build: ./web
     links:
+      - db
       - notificaciones
       - estadisticas
       - ordenes
