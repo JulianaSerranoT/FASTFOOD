@@ -11,4 +11,4 @@ COPY  index.js /productos/src
 RUN npm init --yes
 RUN npm install express morgan mysql mysql2 axios
 
-CMD node index.js
+CMD node /src/index.js
