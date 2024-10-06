@@ -6,7 +6,7 @@ services:
     image: mysql:8.0
     container_name: mysql-db
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: fastfood
       MYSQL_USER: root
       MYSQL_PASSWORD: my_password
@@ -16,7 +16,7 @@ services:
       - ./db_data:/var/lib/mysql  # Para persistir los datos
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Script SQL para inicialización
   notificaciones:
-    build: ./notificaciones
+    build: ./notificaciones/src
     links:
       - tareas
       - usuarios
@@ -25,7 +25,7 @@ services:
     ports:
       - "3001:3001"
   ordenes:
-    build: ./ordenes
+    build: ./ordenes/src
     links:
       - usuarios
       - productos
@@ -33,27 +33,27 @@ services:
     ports:
       - "3002:3002"
   productos:
-    build: ./productos
+    build: ./productos/src
     links:
       - db
       ##necesito saber database
     ports:
       - "3003:3003"
   tareas:
-    build: ./tareas
+    build: ./tareas/src
     links:
       - db
       - usuarios
     ports:
       - "3004:3004"
   usuarios:
-    build: ./usuarios
+    build: ./usuarios/src
     links:
-      - dn
+      - db
     ports:
       - "3005:3005"
   estadisticas:
-    build: ./estadisticas
+    build: ./estadisticas/src
     links:
       - ordenes
       - usuarios

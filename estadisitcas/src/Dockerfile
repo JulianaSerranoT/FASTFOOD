@@ -9,6 +9,6 @@ COPY  models /estadisticas/src/models
 COPY  index.js /estadisticas/src
 
 RUN npm init --yes
-RUN npm intsall express morgan mysql mysql2 axios
+RUN npm install express morgan mysql mysql2 axios
 
 CMD node index.js
