@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['rol'] === 'gerente') {
     ];
 
     $context = stream_context_create($options);
-    $apiUrl = "http://localhost:3003/productos/$id"; // API para actualizar el producto
+    $apiUrl = "http://192.168.100.2:3003/productos/$id"; // API para actualizar el producto
     $result = file_get_contents($apiUrl, false, $context);
 
     if ($result) {

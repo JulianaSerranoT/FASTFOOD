@@ -37,7 +37,7 @@ router.post('/ordenes', async (req, res) => {
     }
 
     // Creamos la orden
-    const response = await axios.get(`http://localhost:3005/usuarios/${usuario}`);
+    const response = await axios.get(`http://192.168.100.2:3005/usuarios/${usuario}`);
     const { nombre } = response.data;
     const orden = { 
         nombreCliente: nombre, 
@@ -130,7 +130,7 @@ router.get('/ordenes/usuario/:usuarioCliente', async (req, res) => {
 async function calcularTotal(items) {
     let ordenTotal = 0;
     for (const producto of items) {
-        const response = await axios.get(`http://localhost:3003/productos/${producto.id}`);
+        const response = await axios.get(`http://192.168.100.2:3003/productos/${producto.id}`);
         ordenTotal += response.data.precio * producto.cantidad;
     }
     return ordenTotal;
@@ -140,7 +140,7 @@ async function calcularTotal(items) {
 async function verificarDisponibilidad(items) {
     let disponibilidad = true;
     for (const producto of items) {
-        const response = await axios.get(`http://localhost:3003/productos/${producto.id}`);
+        const response = await axios.get(`http://192.168.100.2:3003/productos/${producto.id}`);
         if (response.data.cantidad < producto.cantidad) {
             disponibilidad = false;
             break;
@@ -152,7 +152,7 @@ async function verificarDisponibilidad(items) {
 // Función para actualizar el inventario de productos
 async function actualizarInventario(items) {
     for (const producto of items) {
-        const response = await axios.get(`http://localhost:3003/productos/${producto.id}`);
+        const response = await axios.get(`http://192.168.100.2:3003/productos/${producto.id}`);
         const cantidadActual = response.data.cantidad; // Cambiado de inventario a cantidad
         const nuevaCantidad = cantidadActual - producto.cantidad;
 
@@ -161,7 +161,7 @@ async function actualizarInventario(items) {
             throw new Error(`No hay suficiente inventario para el producto ${producto.id}`);
         }
 
-        await axios.put(`http://localhost:3003/productos/${producto.id}`, {
+        await axios.put(`http://192.168.100.2:3003/productos/${producto.id}`, {
             cantidad: nuevaCantidad // Asegúrate de enviar la nueva cantidad
         });
     }

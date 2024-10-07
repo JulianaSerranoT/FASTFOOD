@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data_json = json_encode($data);
 
     // URL de la API
-    $url = "http://localhost:3002/ordenes/actualizar/" . $id;
+    $url = "http://192.168.100.2:3002/ordenes/actualizar/" . $id;
 
     // Configuración del contexto para la solicitud PUT
     $options = array(

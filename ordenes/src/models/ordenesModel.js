@@ -2,9 +2,9 @@ const mysql = require('mysql2/promise');
 
 // Configuración de la conexión a la base de datos
 const connection = mysql.createPool({
-    host: 'localhost',
+    host: 'db',
     user: 'root',
-    password: '123456',
+    password: '123456789',
     port: 3306,
     database: 'fastfood'
 });

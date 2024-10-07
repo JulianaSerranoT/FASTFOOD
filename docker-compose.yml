@@ -6,15 +6,12 @@ services:
     image: mysql:8.0
     container_name: mysql-db
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: 123456789
       MYSQL_DATABASE: fastfood
-      MYSQL_USER: root
-      MYSQL_PASSWORD: my_password
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
-      - ./db_data:/var/lib/mysql  # Para persistir los datos
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Script SQL para inicialización
+      - ./db:/docker-entrypoint-initdb.d/:ro  # Script SQL para inicialización
   notificaciones:
     build: ./notificaciones/src
     links:

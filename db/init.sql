@@ -7,7 +7,7 @@ CREATE TABLE notificacion (
     idTarea INT,
     trabajadorAsignado varchar(20),
     estado varchar(20),
-    fechaHora timestamp DEFAULT CURRENT_TIMESTAMP
+    fechaHora timestamp DEFAULT CURRENT_TIMESTAMP,
     primary key(id)
 );
 
@@ -34,14 +34,18 @@ CREATE TABLE tareas (
     descripcion varchar(50),
     usuarioAsignado varchar(10),
     estado ENUM('creada', 'en proceso', 'terminada') DEFAULT 'creada',
-    prioridad INT
+    prioridad INT,
     primary key(id)
 );
 
-CREATE TABLE usuarios (
-    nombre varchar(10),
-    usuario varchar(10),
-    password varchar(10),
-    rol ENUM('gerente', 'trabajador', 'cliente') NOT NULL DEFAULT 'gerente',
-    primary key(usuario)
+CREATE TABLE IF NOT EXISTS  usuarios (
+    nombre VARCHAR(10) PRIMARY KEY,
+    usuario VARCHAR(10),
+    password VARCHAR(10),
+    rol ENUM('gerente', 'trabajador', 'cliente') NOT NULL DEFAULT 'gerente'
 );
+
+INSERT INTO usuarios
+  (nombre,usuario,password,rol)
+VALUES
+  ('luis', 'luis_gar','123456789','gerente');

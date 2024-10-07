@@ -8,11 +8,11 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'cliente') {
 $usuario = $_SESSION['usuario'];
 
 // Obtener productos desde la API
-$apiUrlProductos = "http://localhost:3003/productos";
+$apiUrlProductos = "http://192.168.100.2:3003/productos";
 $productos = json_decode(file_get_contents($apiUrlProductos), true);
 
 // Obtener órdenes del usuario desde la API
-$apiUrlOrdenes = "http://localhost:3002/ordenes/usuario/$usuario";
+$apiUrlOrdenes = "http://192.168.100.2:3002/ordenes/usuario/$usuario";
 $ordenes = json_decode(file_get_contents($apiUrlOrdenes), true);
 
 // Verificar si la respuesta de la API es válida

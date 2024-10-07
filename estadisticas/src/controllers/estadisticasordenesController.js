@@ -11,7 +11,7 @@ router.get('/estadisticas/ordenes', async (req, res) => {
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type');  // Encabezados permitidos
 
         // Hacemos una solicitud a la API de órdenes para obtener todas las órdenes
-        const response = await axios.get('http://localhost:3002/ordenes');
+        const response = await axios.get('http://192.168.100.2:3002/ordenes');
         const ordenes = response.data;
 
         if (ordenes.length === 0) {

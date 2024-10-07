@@ -8,11 +8,11 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'trabajador') {
 $usuario = $_SESSION['usuario'];
 
 // Obtener tareas del trabajador desde la API
-$apiUrlTareas = "http://localhost:3004/tareas/usuario/$usuario";
+$apiUrlTareas = "http://192.168.100.2:3004/tareas/usuario/$usuario";
 $tareas = json_decode(file_get_contents($apiUrlTareas), true);
 
 // Obtener órdenes desde la API
-$apiUrlOrdenes = "http://localhost:3002/ordenes"; // Cambia la URL si es necesario
+$apiUrlOrdenes = "http://192.168.100.2:3002/ordenes"; // Cambia la URL si es necesario
 $ordenes = json_decode(file_get_contents($apiUrlOrdenes), true);
 
 // Verificar si hay errores al obtener datos de las APIs

@@ -7,7 +7,7 @@ const estadisticasOrdenesModel = {
     async obtenerEstadisticas() {
         try {
             // Hacemos la solicitud a la API de órdenes para obtener todas las órdenes
-            const response = await axios.get('http://localhost:3002/ordenes');
+            const response = await axios.get('http://192.168.100.2:3002/ordenes');
             const ordenes = response.data;
 
             // Si no hay órdenes, retornamos un array vacío
