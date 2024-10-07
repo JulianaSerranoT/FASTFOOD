@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 
 services:
 
@@ -11,6 +11,7 @@ services:
     ports:
       - "3307:3306"
     volumes:
+      - ./db_data:/var/lib/mysql
       - ./db:/docker-entrypoint-initdb.d/:ro  # Script SQL para inicialización
   notificaciones:
     build: ./notificaciones/src
@@ -18,7 +19,7 @@ services:
       - tareas
       - usuarios
       - db
-    ## necesito saber si va database o como se hace
+    image: fastfood-notificaciones
     ports:
       - "3001:3001"
   ordenes:
@@ -27,6 +28,7 @@ services:
       - usuarios
       - productos
       - db
+    image: fastfood-ordenes
     ports:
       - "3002:3002"
   productos:
@@ -34,6 +36,7 @@ services:
     links:
       - db
       ##necesito saber database
+    image: fastfood-productos
     ports:
       - "3003:3003"
   tareas:
@@ -41,12 +44,14 @@ services:
     links:
       - db
       - usuarios
+    image: fastfood-tareas
     ports:
       - "3004:3004"
   usuarios:
     build: ./usuarios/src
     links:
       - db
+    image: fastfood-usuarios
     ports:
       - "3005:3005"
   estadisticas:
@@ -55,6 +60,7 @@ services:
       - ordenes
       - usuarios
       - db
+    image: fastfood-estadisticas
     ports:
       - "3006:3006"
   web:
@@ -67,6 +73,7 @@ services:
       - productos
       - tareas
       - usuarios
+    image: fastfood-web
     ports:
       - "1080:80"
     
