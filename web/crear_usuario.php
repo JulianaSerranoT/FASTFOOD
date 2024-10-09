@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['rol'] === 'gerente') {
     ];
 
     $context  = stream_context_create($options);
-    $apiUrl = "http://192.168.100.2:3005/usuarios";
+    $apiUrl = "http://usuarios:3005/usuarios";
     $result = file_get_contents($apiUrl, false, $context);
 
     if ($result) {

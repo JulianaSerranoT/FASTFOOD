@@ -19,7 +19,7 @@ services:
       - tareas
       - usuarios
       - db
-    image: fastfood-notificaciones
+    image: luisgar0821/notificaciones:latest
     ports:
       - "3001:3001"
   ordenes:
@@ -28,7 +28,7 @@ services:
       - usuarios
       - productos
       - db
-    image: fastfood-ordenes
+    image: luisgar0821/ordenes:latest
     ports:
       - "3002:3002"
   productos:
@@ -36,7 +36,7 @@ services:
     links:
       - db
       ##necesito saber database
-    image: fastfood-productos
+    image: luisgar0821/productos:latest
     ports:
       - "3003:3003"
   tareas:
@@ -44,14 +44,14 @@ services:
     links:
       - db
       - usuarios
-    image: fastfood-tareas
+    image:  luisgar0821/tareas:latest
     ports:
       - "3004:3004"
   usuarios:
     build: ./usuarios/src
     links:
       - db
-    image: fastfood-usuarios
+    image:  luisgar0821/usuarios:latest
     ports:
       - "3005:3005"
   estadisticas:
@@ -60,7 +60,7 @@ services:
       - ordenes
       - usuarios
       - db
-    image: fastfood-estadisticas
+    image:  luisgar0821/estadisticas:latest
     ports:
       - "3006:3006"
   web:
@@ -73,7 +73,7 @@ services:
       - productos
       - tareas
       - usuarios
-    image: fastfood-web
+    image:  luisgar0821/webf:latest
     ports:
       - "1080:80"
     

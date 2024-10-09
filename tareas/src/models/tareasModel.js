@@ -11,7 +11,7 @@ const connection = mysql.createPool({
 
 async function verificarUsuarioExiste(usuario) {
     // URL de la API de usuarios
-    const usuariosApiUrl = 'http://192.168.100.2:3005/usuarios';
+    const usuariosApiUrl = 'http://usuarios:3005/usuarios';
     try {
         const response = await axios.get(`${usuariosApiUrl}/${usuario}`);
         return response.status === 200; // Si el estado es 200, el usuario existe
