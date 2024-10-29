@@ -49,4 +49,3 @@ INSERT INTO usuarios
   (nombre,usuario,password,rol)
 VALUES
   ('luis', 'luis_gar','123456789','gerente');
-
