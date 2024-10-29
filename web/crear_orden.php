@@ -23,7 +23,7 @@ foreach ($items as $idProducto => $cantidad) {
 }
 
 // Llamada a la API para crear la orden
-$apiUrl = "http://localhost:3002/ordenes";
+$apiUrl = "http://ordenes:3002/ordenes";
 $data = [
     'usuario' => $usuario,
     'items' => $productos
