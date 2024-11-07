@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['rol'] === 'gerente') {
     ];
 
     $context  = stream_context_create($options);
-    $apiUrl = "http://localhost:3004/tareas";
+    $apiUrl = "http://tareas:3004/tareas";
     $result = file_get_contents($apiUrl, false, $context);
 
     if ($result) {
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['rol'] === 'gerente') {
             ];
 
             $notificacionContext  = stream_context_create($notificacionOptions);
-            $notificacionUrl = "http://localhost:3001/notificacion";
+            $notificacionUrl = "http://notificaciones:3001/notificacion";
             $notificacionResult = file_get_contents($notificacionUrl, false, $notificacionContext);
 
             if ($notificacionResult) {
