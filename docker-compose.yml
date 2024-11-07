@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 networks:
   stack_default:
@@ -12,11 +12,13 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 123456789
       MYSQL_DATABASE: fastfood
-      MYSQL_LOCAL_INFILE: 1
     ports:
       - "3307:3306"
     volumes: 
       - ./db:/docker-entrypoint-initdb.d/:ro  # Script SQL para inicialización
+      - ./db:/docker-entrypoint-productos.d/:ro
+      - ./db:/docker-entrypoint-usuarios.d/:ro
+      - ./db:/docker-entrypoint-ordenes.d/:ro
     deploy: 
       placement:
         constraints:
@@ -43,6 +45,10 @@ services:
     image: luisgar0821/ordenes:latest
     ports:
       - "3002:3002"
+    depends_on:
+      - db
+      - productos
+      - usuarios
     deploy:
       placement:
         constraints:
@@ -105,10 +111,33 @@ services:
       - productos
       - tareas
       - usuarios
-    image:  luisgar0821/webf:latest
+    image:  luisgar0821/webf:latest 
     ports:
       - "1080:80"
     deploy:
       placement:
         constraints:
           - node.ip == 192.168.100.3
+  pyspark:
+    build: ./pyspark
+    image: luisgar0821/pyspark:latest  # Usar la imagen personalizada
+    volumes:
+      - ./pyspark:/app
+      - ./pyspark/mysql-connector-java-8.0.30.jar:/opt/spark/jars/mysql-connector-java.jar  # Conector JDBC
+      - ./pyspark/wait-for-it.sh:/wait-for-it.sh  # Script para esperar a que MySQL esté listo
+    environment:
+      - SPARK_MODE=master
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=123456789
+      - MYSQL_DATABASE=fastfood
+    command: >
+      /bin/bash -c "/wait-for-it.sh db:3306  -- spark-submit --jars /opt/spark/jars/mysql-connector-java.jar /app/generate_orders_csv.py"
+    depends_on:
+      - db
+    deploy:
+      placement:
+        constraints:
+          - node.ip == 192.168.100.2  # Ajusta según tu configuración
+

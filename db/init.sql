@@ -44,8 +44,3 @@ CREATE TABLE IF NOT EXISTS  usuarios (
     password VARCHAR(10),
     rol ENUM('gerente', 'trabajador', 'cliente') NOT NULL DEFAULT 'gerente'
 );
-
-INSERT INTO usuarios
-  (nombre,usuario,password,rol)
-VALUES
-  ('luis', 'luis_gar','123456789','gerente');
