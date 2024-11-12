@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['rol'] === 'trabajador') 
 
     // Enviar la solicitud PUT
     $context  = stream_context_create($options);
-    $apiUrl = "http://localhost:3004/tareas/$idTarea";  // URL con el ID de la tarea
+    $apiUrl = "http://tareas:3004/tareas/$idTarea";  // URL con el ID de la tarea
     $result = @file_get_contents($apiUrl, false, $context);
 
     if ($result !== FALSE) {
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['rol'] === 'trabajador') 
 
         // Enviar la solicitud POST de notificación
         $notificacionContext = stream_context_create($notificacionOptions);
-        $notificacionUrl = "http://localhost:3001/notificacion";
+        $notificacionUrl = "http://notificaciones:3001/notificacion";
         $notificacionResult = @file_get_contents($notificacionUrl, false, $notificacionContext);
 
         // Depurar el resultado de la solicitud de notificación

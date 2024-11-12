@@ -1,66 +1,107 @@
 version: '3.8'
 
+networks:
+  stack_default:
+    driver: overlay
+
 services:
 
   db:
     image: mysql:8.0
     container_name: mysql-db
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: 123456789
       MYSQL_DATABASE: fastfood
-      MYSQL_USER: root
-      MYSQL_PASSWORD: my_password
     ports:
-      - "3306:3306"
-    volumes:
-      - ./db_data:/var/lib/mysql  # Para persistir los datos
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Script SQL para inicialización
+      - "3307:3306"
+    volumes: 
+      - ./db:/docker-entrypoint-initdb.d/:ro  # Script SQL para inicialización
+      - ./db:/docker-entrypoint-productos.d/:ro
+      - ./db:/docker-entrypoint-usuarios.d/:ro
+      - ./db:/docker-entrypoint-ordenes.d/:ro
+    deploy: 
+      placement:
+        constraints:
+          - node.ip == 192.168.100.2
   notificaciones:
-    build: ./notificaciones
+    build: ./notificaciones/src
     links:
       - tareas
       - usuarios
       - db
-    ## necesito saber si va database o como se hace
+    image: luisgar0821/notificaciones:latest
     ports:
       - "3001:3001"
+    deploy:
+      placement:
+        constraints:
+          - node.ip == 192.168.100.3
   ordenes:
-    build: ./ordenes
+    build: ./ordenes/src
     links:
       - usuarios
       - productos
       - db
+    image: luisgar0821/ordenes:latest
     ports:
       - "3002:3002"
+    depends_on:
+      - db
+      - productos
+      - usuarios
+    deploy:
+      placement:
+        constraints:
+          - node.ip == 192.168.100.3
   productos:
-    build: ./productos
+    build: ./productos/src
     links:
       - db
       ##necesito saber database
+    image: luisgar0821/productos:latest
     ports:
       - "3003:3003"
+    deploy:
+      placement:
+        constraints:
+          - node.ip == 192.168.100.3
   tareas:
-    build: ./tareas
+    build: ./tareas/src
     links:
       - db
       - usuarios
+    image:  luisgar0821/tareas:latest
     ports:
       - "3004:3004"
+    deploy:
+      placement:
+        constraints:
+          - node.ip == 192.168.100.3
   usuarios:
-    build: ./usuarios
+    build: ./usuarios/src
     links:
-      - dn
+      - db
+    image:  luisgar0821/usuarios:latest
     ports:
       - "3005:3005"
+    deploy:
+      placement:
+        constraints:
+          - node.ip == 192.168.100.3
   estadisticas:
-    build: ./estadisticas
+    build: ./estadisticas/src
     links:
       - ordenes
       - usuarios
       - db
+    image:  luisgar0821/estadisticas:latest
     ports:
       - "3006:3006"
-  web:
+    deploy:
+      placement:
+        constraints:
+          - node.ip == 192.168.100.3
+  web1:
     build: ./web
     links:
       - db
@@ -70,6 +111,61 @@ services:
       - productos
       - tareas
       - usuarios
+    image:  luisgar0821/webf:latest
+    environment:
+      - APACHE_RUN_USER=www-data
+      - APACHE_RUN_GROUP=www-data
+
+  pyspark:
+    build: ./pyspark
+    image: luisgar0821/pyspark:latest  # Usar la imagen personalizada
+    volumes:
+      - ./pyspark:/app
+      - ./pyspark/mysql-connector-java-8.0.30.jar:/opt/spark/jars/mysql-connector-java.jar  # Conector JDBC
+      - ./pyspark/wait-for-it.sh:/wait-for-it.sh  # Script para esperar a que MySQL esté listo
+    environment:
+      - SPARK_MODE=master
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=123456789
+      - MYSQL_DATABASE=fastfood
+    command: >
+      /bin/bash -c "/wait-for-it.sh db:3306  -- spark-submit --jars /opt/spark/jars/mysql-connector-java.jar /app/generate_orders_csv.py"
+    depends_on:
+      - db
+    deploy:
+      placement:
+        constraints:
+          - node.ip == 192.168.100.2  # Ajusta según tu configuración
+  haproxy:
+    image: haproxy:latest
+    links:
+      - web1
+      - web2
     ports:
-      - "1080:80"
-    
+      - "5080:80"
+    volumes:
+      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    depends_on:
+      - web1
+      - web2
+    deploy:
+      placement:
+        constraints:
+          - node.ip == 192.168.100.2
+  web2:
+    build: ./web
+    links:
+      - db
+      - notificaciones
+      - estadisticas
+      - ordenes
+      - productos
+      - tareas
+      - usuarios
+    image: luisgar0821/webf:latest
+    environment:
+      - APACHE_RUN_USER=www-data
+      - APACHE_RUN_GROUP=www-data
+

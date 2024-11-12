@@ -2,9 +2,9 @@ const mysql = require('mysql2/promise');
 const axios = require('axios'); // Importa axios
 
 const connection = mysql.createPool({
-    host: 'localhost',
+    host: 'db',
     user: 'root',
-    password: '123456',
+    password: '123456789',
     port:'3306',
     database: 'fastfood'
 });
@@ -12,7 +12,7 @@ const connection = mysql.createPool({
 async function verificarTareaExiste(idTarea) {
     
     // URL de las APIs de tareas y usuarios
-    const tareasApiUrl = 'http://localhost:3004/tareas';
+    const tareasApiUrl = 'http://tareas:3004/tareas';
 
     try {
         const response = await axios.get(`${tareasApiUrl}/${idTarea}`);
@@ -32,7 +32,7 @@ async function verificarTareaExiste(idTarea) {
 // Función para verificar si un usuario existe
 async function verificarUsuarioExiste(usuario) {
     // URL de las APIs de usuarios
-    const usuariosApiUrl = 'http://localhost:3005/usuarios'; 
+    const usuariosApiUrl = 'http://usuarios:3005/usuarios'; 
     try {
         const response = await axios.get(`${usuariosApiUrl}/${usuario}`);
         return response.status === 200; // Si el estado es 200, el usuario existe

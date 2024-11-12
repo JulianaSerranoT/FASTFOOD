@@ -1,3 +1,7 @@
-FROM php:8.2.5RC1-apache-buster
-
-COPY . /var/www/html/web
+FROM ubuntu
+RUN apt update
+RUN apt install -y apache2
+RUN apt install -y apache2-utils
+RUN apt clean
+EXPOSE 80
+CMD ["apache2ctl", "-D", "FOREGROUND"]

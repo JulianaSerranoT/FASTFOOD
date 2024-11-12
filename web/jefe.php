@@ -6,11 +6,11 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'gerente') {
 }
 
 // Obtener todas las notificaciones
-$apiUrl = "http://localhost:3001/notificacion";  // La URL para obtener todas las notificaciones
+$apiUrl = "http://notificaciones:3001/notificacion";  // La URL para obtener todas las notificaciones
 $notificaciones = json_decode(file_get_contents($apiUrl), true);
 
 // Obtener todos los productos
-$apiUrlProductos = "http://localhost:3003/productos";
+$apiUrlProductos = "http://productos:3003/productos";
 $productos = json_decode(file_get_contents($apiUrlProductos), true);
 ?>
 
@@ -214,7 +214,7 @@ $productos = json_decode(file_get_contents($apiUrlProductos), true);
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Realizar una solicitud a la API de estadísticas de órdenes
-            fetch('http://localhost:3006/estadisticas/ordenes')
+            fetch('http://192.168.100.2:3006/estadisticas/ordenes')
                 .then(response => response.json())
                 .then(data => {
                     console.log('Datos recibidos:', data); // Verifica los datos en la consola

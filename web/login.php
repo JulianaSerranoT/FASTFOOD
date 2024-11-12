@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     // Llamada a la API de usuarios para validar credenciales
-    $apiUrl = "http://localhost:3005/usuarios/$usuario";
+    $apiUrl = "http://usuarios:3005/usuarios/$usuario";
     $usuarioData = json_decode(file_get_contents($apiUrl), true);
 
     if ($usuarioData && $usuarioData['password'] === $password) {
